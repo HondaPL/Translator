@@ -47,7 +47,9 @@ function App() {
   const [translation, setTranslation] = useState('')
   const [text, setText] = useState('')
 
-  const saveText = (event: any) => setText(event.target.value)
+  const saveText = (event: any) => {
+    setText(event.target.value)
+  }
 
   const handleChangeFrom = (selectedOption: any) => setLangFrom(selectedOption.value);
 
@@ -115,19 +117,18 @@ function App() {
     }).then((response: any) => setTranslation(response.data[0].translations[0].text))
   }
 
-  // const swap = () => {
-  //   setText(translation)
-  //   setTranslation(text)
-  // }
-
+  const handleEnter = (event : any) => {
+    if(event.key === 'Enter'){
+      translate(langTo)
+    }
+  }
   return (
     <div className="App">
       <h1>Translator</h1>
-      {/* <Button variant="contained" color="primary" onClick={() => swap()}>Swap</Button> */}
       <div className='translatorsBox'>
         <div className='fromBox'>
           <Select isSearchable defaultValue={{ value: 'pl-PL', label: 'Polish' }} onChange={handleChangeFrom} options={options} />
-          <TextareaAutosize onChange={(event) => { saveText(event); setTranslation('') }} className='from' value={text} />
+          <TextareaAutosize onKeyPress={(event) => handleEnter(event)} onChange={(event) => { saveText(event); setTranslation('') }} className='from' value={text} />
           <div className='fromActions'>
             <Tooltip title="Translate speech">
               <IconButton onClick={() => listen()}>
